@@ -5,6 +5,9 @@ import re
 import openai
 import os
 
+# ✅ Set page config at the very beginning
+st.set_page_config(layout="wide", page_title="AI Recipe Generator", initial_sidebar_state="expanded")
+
 # Load settings from config.json
 def load_settings():
     with open("config.json", "r") as f:
@@ -30,6 +33,11 @@ st.markdown(
         .stButton > button {{
             background-color: {settings["primary_color"]};
             color: white;
+        }}
+        /* Custom input styles for orange-outlined textboxes */
+        div[data-baseweb="input"] > div {{
+            border: 2px solid orange !important;
+            border-radius: 5px;
         }}
     </style>
     """,
@@ -78,7 +86,7 @@ def parse_ingredient(ingredient):
 def get_recipe(ingredients):
     prompt = f"Given these ingredients: {', '.join(ingredients)}, suggest a simple recipe that I can make using these ingredients and give me the steps and ingredient quantities. Don't give me recipes that include ingredients other than the ingredients I provide."
     data = {
-        "model": "gpt-4",
+        "model": "gpt-4-turbo",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.7
     }
